@@ -1,0 +1,49 @@
+import Compatator from "../Comparator";
+
+describe("Comparator", () => {
+    it("Should compare with default comparator function", () => {
+        const comparator = new Compatator();
+
+        expect(comparator.equal(0, 0)).toBe(true);
+        expect(comparator.equal(0, 1)).toBe(false);
+        expect(comparator.equal("a", "a")).toBe(true);
+        expect(comparator.lessThan(1, 2)).toBe(true);
+        expect(comparator.lessThan("a", "b")).toBe(true);
+        expect(comparator.lessThan("a", "b")).toBe(true);
+        expect(comparator.lessThan(10, 2)).toBe(false);
+        expect(comparator.lessThanOrEqual(10, 2)).toBe(false);
+        expect(comparator.lessThanOrEqual(1, 1)).toBe(true);
+        expect(comparator.greaterThan(0, 0)).toBe(false);
+        expect(comparator.greaterThan(10, 0)).toBe(true);
+        expect(comparator.greaterThanOrEqual(10, 9)).toBe(true);
+        expect(comparator.greaterThanOrEqual(9.9, 9.8)).toBe(true);
+        expect(comparator.greaterThanOrEqual(9.9, 9.9)).toBe(true);
+
+    });
+
+    it("Should compare with custom comparator function", () => {
+        const comparator = new Compatator((a, b) => {
+            if (a.length === b.length) {
+                return 0;
+            }
+
+            return a.length < b.length ? -1 : 1;
+        });
+
+        expect(comparator.equal('a', 'b')).toBe(true);
+        expect(comparator.equal('a', '')).toBe(false);
+        expect(comparator.lessThan('b', 'aa')).toBe(true);
+        expect(comparator.greaterThanOrEqual('a', 'aa')).toBe(false);
+        expect(comparator.greaterThanOrEqual('aa', 'a')).toBe(true);
+        expect(comparator.greaterThanOrEqual('a', 'a')).toBe(true);
+
+        comparator.reverse();
+
+        expect(comparator.equal('a', 'b')).toBe(true);
+        expect(comparator.equal('a', '')).toBe(false);
+        expect(comparator.lessThan('b', 'aa')).toBe(false);
+        expect(comparator.greaterThanOrEqual('a', 'aa')).toBe(true);
+        expect(comparator.greaterThanOrEqual('aa', 'a')).toBe(false);
+        expect(comparator.greaterThanOrEqual('a', 'a')).toBe(true);
+    })
+})
